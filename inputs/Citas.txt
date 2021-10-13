@@ -1,0 +1,4 @@
+# Archivo de citas // Quotes File
+# ESP : Arcadia se encargará de ir añadiendo citas con !citar "Cita". Al iniciar, se cargarán estas.
+# ENG : Arcadia will add those quotes with !citar "Quote". When it starts, all quotes will be loaded.
+#

@@ -1,0 +1,4 @@
+# Archivo de streamers // Streamers File
+# ESP : Añade los canales aquí, cada uno en una línea
+# ENG : Add the channels here, each one in a line
+#
