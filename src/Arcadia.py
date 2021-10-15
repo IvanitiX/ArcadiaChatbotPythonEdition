@@ -23,7 +23,11 @@ class Arcadia(commands.Bot):
             token = input(">> : ")
             with open(".env","a") as entorno:
                 entorno.write(f"\nOAUTH_TOKEN={token}")
-
+	
+	"""
+	Se carga desde un archivo de entorno los parámetros del bot (usuario, token y archivos de streamer y de citas).
+	El token se genera en la página https://twitchapps.com/tmi/
+	"""
         load_dotenv()
         self.config = {
             'username' : os.getenv('BOT_USERNAME'),
@@ -49,20 +53,37 @@ class Arcadia(commands.Bot):
     async def event_ready(self):
         print(f'>> {self.nick} ha entrado al chat')
 
+    """
+    Función hola:
+    Esta función saluda al usuario que invoca el comando.
+    """
     @commands.command()
     async def hola(self, ctx: commands.Context):
         await ctx.send(self.saludar(ctx))
-
+        
+    """
+    Función Hola:
+    Es la misma función que hola pero con la hache mayúscula.
+    """
     @commands.command()
     async def Hola(self, ctx: commands.Context):
         await ctx.send(self.saludar(ctx))
-
+    
+    """
+    Función dado:
+    Esta función muestra un número entre uno y seis.
+    """
     @commands.command()
     async def dado(self, ctx: commands.Context):
         lados = 6
         numero = self.randomizarNumero(lados)
         await ctx.send(f'/me {ctx.author.display_name}, has sacado un {numero} en el dado')
 
+    """
+    Funcion examen:
+    Esta funcion necesita una asignatura como argumento, si no se introduce, la pide de nuevo.
+    Devuelve una nota del 1 al 10 junto con el nombre de la asignatura.
+    """
     @commands.command()
     async def examen(self, ctx: commands.Context):
         if(ctx.message.content != "!examen"):
@@ -73,6 +94,10 @@ class Arcadia(commands.Bot):
         else:
             await ctx.send(f'/me {ctx.author.display_name} , necesito que me digas de qué asignatura es ese examen')
 
+    """
+    Función coinflip:
+    Esta función simula el tirar una moneda, muestra por el chat si ha salido cara o cruz.
+    """
     @commands.command()
     async def coinflip(self, ctx: commands.Context):
         caras = 2
@@ -83,14 +108,29 @@ class Arcadia(commands.Bot):
         if(caraFinal == 1):
             await ctx.send(f'/me {ctx.author.display_name}, has sacado cruz')
 
+    """
+    Función dollars:
+    La función muestra el mensaje de abajo en el chat.
+    """
     @commands.command()
     async def dollars(self, ctx: commands.Context):
         await ctx.send('/me Dollars, chavales, DOOOOOLLARSSS!')
 
+    """
+    Función arcadia:
+    La función muestra el mensaje de abajo en el chat (una presentación del bot).
+    """
     @commands.command()
     async def arcadia(self,ctx: commands.Context):
         await ctx.send('/me ¡Hola, soy Arcadia! Soy una IA que interactúa con vosotros en los chats de Twitch')
 
+    """
+    Funcion amor:
+    La función pide el nombre de el o la amante, si no se introduce, lo pide.
+    Esta función genera un numero aleatorio entre 1 y 100 que equivale al nivel de amor,
+    a continuación genera un número entre uno y cinco para elegir uno de los cinco mensajes
+    y muestra el mensaje elegido junto al nivel de amor.
+    """
     @commands.command()
     async def amor(self, ctx: commands.Context):
         if(ctx.message.content != "!amor"):
@@ -114,7 +154,11 @@ class Arcadia(commands.Bot):
         else:
             await ctx.send(f'/me {ctx.author.display_name} , necesito que me digas quién es el minito o la muchacha')
 
-        
+    """
+    Funcion citar:
+    Esta función pide como argumento una frase (la cita que se quiere guardar).
+    La función guarda en un documento de texto las citas de los usuarios junto con sus nicks.
+    """
     @commands.command()
     async def citar(self,ctx: commands.Context):
         cita = split(string=ctx.message.content,pattern=" ",maxsplit=1)[1]
@@ -122,7 +166,12 @@ class Arcadia(commands.Bot):
             archivoCitas.write(f"\n{cita} - Citado por {ctx.author.display_name}")
         self.config['quotes'] = self.parser.parseQuotes(os.getenv('QUOTES_FILE'))
         await ctx.send(f"La cita ha sido guardada con éxito")
-
+    
+    """
+    Funcion cita:
+    Busca en el archivo de texto una cita aleatoria (si la hay) y la muestra por el chat,
+    si no hay ninguna cita de ese usuario le propondrá crear una.
+    """
     @commands.command()
     async def cita(self,ctx: commands.Context):
         numeroCitas = len(self.config['quotes']) - 1
