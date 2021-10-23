@@ -24,6 +24,6 @@ jobs:
     - name: Install Black
       run: |
         pip install 'black==21.9b0'
-    - name: Check README
+    - name: Check format
       run: |
         black --check src/
