@@ -6,10 +6,12 @@ on:
   push:
     paths:
       - 'src/**.py'
+      - '.github/workflows/lint.yml'
 
   pull_request:
     paths:
       - 'src/**.py'
+      - '.github/workflows/lint.yml'
 
 jobs:
   CodeFormat:
