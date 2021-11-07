@@ -229,6 +229,7 @@ class Arcadia(commands.Bot):
 
     def victoria(self, atacante, defensor):
         enviar = self.randomizarNumeroArray(4)
+        print(enviar)
         if enviar == 1:
             return f"/me {atacante} ha golpeado a {defensor} con la fuerza de un gorila africano."
         elif enviar == 2:
@@ -242,6 +243,7 @@ class Arcadia(commands.Bot):
 
     def derrota(self, atacante, defensor):
         enviar = self.randomizarNumeroArray(4)
+        print(enviar)
         if enviar == 1:
             return f"/me {defensor} ha fallado su ataque contra {atacante}."
         elif enviar == 2:
@@ -264,8 +266,8 @@ class Arcadia(commands.Bot):
                 await ctx.send(
                     f"/me Atención, {ctx.author.display_name} ha retado a un duelo a {contrincante[1]}, preparense."
                 )
-                ataque = self.randomizarNumeroArray(2)
-                contrataque = self.randomizarNumeroArray(2)
+                ataque = self.randomizarNumeroArray(1)
+                contrataque = self.randomizarNumeroArray(1)
                 duelista1 = 0
                 duelista2 = 0
 
