@@ -5,9 +5,14 @@ import random
 from twitchio.ext import commands
 from twitchio.ext.commands.core import command
 from TextParser import TextParser
+import time
 
 
 class Arcadia(commands.Bot):
+
+    TiempoAnterior = 0
+    Tiempo = 0
+
     def __init__(self) -> None:
         self.parser = TextParser()
 
@@ -132,6 +137,34 @@ class Arcadia(commands.Bot):
         await ctx.send("/me Dollars, chavales, DOOOOOLLARSSS!")
 
     """
+    Función help:
+    Envía por susurro una lista de los comandos que se pueden ejecutar.
+    """
+
+    @commands.command()
+    async def help(self, ctx: commands.Context):
+        await ctx.send(
+            f"""/w {ctx.author.display_name} 
+        Los comandos disponibles son:
+        !hola Recibes un saludo del bot en el chat.
+        !coinflip Lanzas una moneda al aire, puede salir cara o cruz.
+        !dado Lanzas un dado y sale un número entre 1 y 6.
+        !examen Pide una asignatura y te dice qué nota sacarás en ese examen.
+        !dollars ¿Por qué no lo pruebas?
+        !arcadia El bot se presenta.
+        !amor Te dice el porcentaje de amor que tienes con la persona que le digas.
+        """
+        )
+
+        await ctx.send(
+            f"""/w {ctx.author.display_name}
+        !duelo Relata un duelo entre tú y la persona que menciones.
+        !citar Guarda en una lista las frases que le digas.
+        !cita Elige entre tus citas una aleatoria y te la dice.
+        """
+        )
+
+    """
     Función arcadia:
     La función muestra el mensaje de abajo en el chat (una presentación del bot).
     """
@@ -216,3 +249,89 @@ class Arcadia(commands.Bot):
             await ctx.send(
                 f"/me No hay citas -  Pero puedes animarte a ponerlas con !citar <Algo>"
             )
+
+    """
+    Funcion Duelo:
+    Duela a la persona mencionada en el chat y relata la pelea.
+    Necesita como argumento el nombre del retado.
+    """
+
+    def victoria(self, atacante, defensor):
+        enviar = self.randomizarNumeroArray(4)
+        if enviar == 1:
+            return f"/me {atacante} ha golpeado a {defensor} con la fuerza de un gorila africano."
+        elif enviar == 2:
+            return f"/me {atacante} ha conseguido impactar un derechazo a {defensor} que le deja temblando."
+        elif enviar == 3:
+            return f"/me {atacante} lanza un puño hacia la cara de {defensor} que le salta varios dientes."
+        elif enviar == 4:
+            return f"/me {atacante} hace un barrido a {defensor} tirándole sin miramientos contra el suelo."
+        elif enviar == 0:
+            return f"/me {atacante} deja la marca de su mano en la cara de {defensor} tras un manotazo."
+
+    def derrota(self, atacante, defensor):
+        enviar = self.randomizarNumeroArray(4)
+        if enviar == 1:
+            return f"/me {defensor} ha fallado su ataque contra {atacante}."
+        elif enviar == 2:
+            return f"/me {defensor} esquiva con facilidad el ataque de {atacante} ."
+        elif enviar == 3:
+            return f"/me {defensor} da un salto hacia atrás, lejos del rango de {atacante} ."
+        elif enviar == 4:
+            return f"/me {defensor} consigue correr lejos de {atacante} antes de que le golpee."
+        elif enviar == 0:
+            return f"/me {defensor} recibe el golpe de {atacante} pero es tan débil que ni lo nota..."
+
+    @commands.command()
+    async def duelo(self, ctx: commands.Context):
+
+        if (round(time.time()) - self.TiempoAnterior) >= 60:
+            if ctx.message.content != "!duelo":
+                contrincante = split(
+                    string=ctx.message.content, pattern=" ", maxsplit=1
+                )
+                await ctx.send(
+                    f"/me Atención, {ctx.author.display_name} ha retado a un duelo a {contrincante[1]}, preparense."
+                )
+                ataque = self.randomizarNumeroArray(1)
+                contrataque = self.randomizarNumeroArray(1)
+                duelista1 = 0
+                duelista2 = 0
+
+                await ctx.send(f"/me Ataque: ")
+                if ataque == 0:
+                    await ctx.send(
+                        self.victoria(ctx.author.display_name, contrincante[1])
+                    )
+                    duelista1 += 1
+                elif ataque == 1:
+                    await ctx.send(
+                        self.derrota(ctx.author.display_name, contrincante[1])
+                    )
+
+                await ctx.send(f"/me Contraataque: ")
+                if contrataque == 0:
+                    await ctx.send(
+                        self.victoria(contrincante[1], ctx.author.display_name)
+                    )
+                    duelista2 += 1
+                elif contrataque == 1:
+                    await ctx.send(
+                        self.derrota(contrincante[1], ctx.author.display_name)
+                    )
+
+                if duelista1 > duelista2:
+                    await ctx.send(
+                        f"/me {ctx.author.display_name} es el ganador de este duelo"
+                    )
+                elif duelista1 < duelista2:
+                    await ctx.send(f"/me {contrincante[1]} es el ganador de este duelo")
+                else:
+                    await ctx.send(
+                        f"/me Al parecer se han tumbado el uno al otro... ¡Doble KO!"
+                    )
+                self.TiempoAnterior = round(time.time())
+            else:
+                await ctx.send(
+                    f"/me No puedes retar a todo el chat, necesito que digas a quien quieres enfrentarte."
+                )
