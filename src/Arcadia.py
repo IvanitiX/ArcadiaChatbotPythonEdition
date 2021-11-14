@@ -11,6 +11,7 @@ import time
 class Arcadia(commands.Bot):
 
     TiempoAnterior = 0
+    Tiempo = 0
 
     def __init__(self) -> None:
         self.parser = TextParser()
@@ -136,6 +137,34 @@ class Arcadia(commands.Bot):
         await ctx.send("/me Dollars, chavales, DOOOOOLLARSSS!")
 
     """
+    Función help:
+    Envía por susurro una lista de los comandos que se pueden ejecutar.
+    """
+
+    @commands.command()
+    async def help(self, ctx: commands.Context):
+        await ctx.send(
+            f"""/w {ctx.author.display_name} 
+        Los comandos disponibles son:
+        !hola Recibes un saludo del bot en el chat.
+        !coinflip Lanzas una moneda al aire, puede salir cara o cruz.
+        !dado Lanzas un dado y sale un número entre 1 y 6.
+        !examen Pide una asignatura y te dice qué nota sacarás en ese examen.
+        !dollars ¿Por qué no lo pruebas?
+        !arcadia El bot se presenta.
+        !amor Te dice el porcentaje de amor que tienes con la persona que le digas.
+        """
+        )
+
+        await ctx.send(
+            f"""/w {ctx.author.display_name}
+        !duelo Relata un duelo entre tú y la persona que menciones.
+        !citar Guarda en una lista las frases que le digas.
+        !cita Elige entre tus citas una aleatoria y te la dice.
+        """
+        )
+
+    """
     Función arcadia:
     La función muestra el mensaje de abajo en el chat (una presentación del bot).
     """
@@ -229,7 +258,6 @@ class Arcadia(commands.Bot):
 
     def victoria(self, atacante, defensor):
         enviar = self.randomizarNumeroArray(4)
-        print(enviar)
         if enviar == 1:
             return f"/me {atacante} ha golpeado a {defensor} con la fuerza de un gorila africano."
         elif enviar == 2:
@@ -243,7 +271,6 @@ class Arcadia(commands.Bot):
 
     def derrota(self, atacante, defensor):
         enviar = self.randomizarNumeroArray(4)
-        print(enviar)
         if enviar == 1:
             return f"/me {defensor} ha fallado su ataque contra {atacante}."
         elif enviar == 2:
